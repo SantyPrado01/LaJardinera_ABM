@@ -33,52 +33,52 @@ def mostrar_formulario_edicion(tree):
         fila_seleccionada = tree.item(item_seleccionado)
         datos = fila_seleccionada['values']
 
-        titulo = Label(ventana_formulario_edicion, text='Editar Producto', font=65)
+        titulo = Label(ventana_formulario_edicion, text='Editar Producto', font=('Helvetica',60))
         titulo.grid(row=0, columnspan=2, padx=10, pady=10)
 
-        titulo_producto = Label(ventana_formulario_edicion, text='Nombre Producto', font=45)
+        titulo_producto = Label(ventana_formulario_edicion, text='Nombre Producto', font=('Helvetica',15))
         titulo_producto.grid(row=1, column=0, padx=5, pady=5)
 
-        nombre_producto = Entry(ventana_formulario_edicion, font=45)
+        nombre_producto = Entry(ventana_formulario_edicion, font=('Helvetica',15))
         nombre_producto.grid(row=1, column=1)
         nombre_producto.insert(0, datos[1])  
 
-        titulo_precio = Label(ventana_formulario_edicion, text='Precio', font=45)
+        titulo_precio = Label(ventana_formulario_edicion, text='Precio', font=('Helvetica',15))
         titulo_precio.grid(row=2, column=0, padx=5, pady=5)
 
-        precio_producto = Entry(ventana_formulario_edicion, font=45)
-        precio_producto.grid(row=2, column=1)
+        precio_producto = Entry(ventana_formulario_edicion, font=('Helvetica',15))
+        precio_producto.grid(row=2, column=1, padx=5, pady=5)
         precio_producto.insert(0, datos[2]) 
 
-        titulo_stock = Label(ventana_formulario_edicion, text='Stock', font=45)
+        titulo_stock = Label(ventana_formulario_edicion, text='Stock', font=('Helvetica',15))
         titulo_stock.grid(row=3, column=0, padx=5, pady=5)
 
-        stock_producto = Entry(ventana_formulario_edicion, font=45)
-        stock_producto.grid(row=3, column=1)
+        stock_producto = Entry(ventana_formulario_edicion, font=('Helvetica',15))
+        stock_producto.grid(row=3, column=1, padx=5, pady=5)
         stock_producto.insert(0, datos[3])  
 
-        titulo_marca = Label(ventana_formulario_edicion, text='Marca', font=45)
-        titulo_marca.grid(row=4, column=0)
+        titulo_proveedor = Label(ventana_formulario_edicion, text='Proveedor', font=('Helvetica',15))
+        titulo_proveedor.grid(row=4, column=0, padx=5, pady=5)
 
         proveedor_opciones = consultar_proveedores()
         proveedor_seleccionada = StringVar()
         proveedor_seleccionada.set(datos[4])
 
         producto_proveedor_opciones = OptionMenu(ventana_formulario_edicion, proveedor_seleccionada, *proveedor_opciones )
-        producto_proveedor_opciones.grid(row=4, column=1)
+        producto_proveedor_opciones.grid(row=4, column=1, padx=5, pady=5)
 
-        titulo_categoria = Label(ventana_formulario_edicion, text='Categoria', font=45)
-        titulo_categoria.grid(row=5, column=0)
+        titulo_categoria = Label(ventana_formulario_edicion, text='Categoria', font=('Helvetica',15))
+        titulo_categoria.grid(row=5, column=0, padx=5, pady=5)
 
         categoria_opciones = consultar_categorias()
         categoria_seleccionada = StringVar()
         categoria_seleccionada.set(datos[5])
 
         producto_categoria_opciones = OptionMenu(ventana_formulario_edicion, categoria_seleccionada, *categoria_opciones)
-        producto_categoria_opciones.grid(row=5, column=1)
+        producto_categoria_opciones.grid(row=5, column=1, padx=5, pady=5)
 
-        boton_agregar_categoria = Button(ventana_formulario_edicion, text='+', command=lambda:agregar_categoria(ventana_agregar_producto))
-        boton_agregar_categoria.grid(row=5, column=2)
+        boton_agregar_categoria = Button(ventana_formulario_edicion, text='+', command=lambda:agregar_categoria(ventana_agregar_producto), font=('Helvetica',15))
+        boton_agregar_categoria.grid(row=5, column=2, padx=5, pady=5)
 
         def guardar_cambios():
             
@@ -123,8 +123,8 @@ def mostrar_formulario_edicion(tree):
                 messagebox.showinfo('Completado','El producto ha sido eliminado con éxito.')
 
                
-    boton_guardar = Button(ventana_formulario_edicion, text='Guardar Cambios', command=guardar_cambios, font=45)
+    boton_guardar = Button(ventana_formulario_edicion, text='Guardar Cambios', command=guardar_cambios, font=('Helvetica',15))
     boton_guardar.grid(row=6, columnspan=2, padx=5, pady=5)
 
-    boton_eliminar =Button(ventana_formulario_edicion, text='Eliminar Producto', command=eliminar_productos, font=45)
+    boton_eliminar =Button(ventana_formulario_edicion, text='Eliminar Producto', command=eliminar_productos, font=('Helvetica',15))
     boton_eliminar.grid(row=7, columnspan=2, padx=5, pady=5)

@@ -24,10 +24,10 @@ def ventana_vender_producto(tree, a):
         ventana_vender_producto = Toplevel(a)
         ventana_vender_producto.resizable(width=None, height=None)
 
-        vender_titulo = Label(ventana_vender_producto, text='Vender Producto')
+        vender_titulo = Label(ventana_vender_producto, text='Vender Producto', font=('Helvetica',60))
         vender_titulo.grid(row=0, column=0, columnspan=2)
 
-        producto_label = Label(ventana_vender_producto, text='Producto: ')
+        producto_label = Label(ventana_vender_producto, text='Producto: ', font=('Helvetica',15))
         producto_label.grid(row=1, column=0)
 
         producto_nombre_entry = Entry(ventana_vender_producto)
@@ -35,7 +35,7 @@ def ventana_vender_producto(tree, a):
         producto_nombre_entry.insert(0, datos[1])
         producto_nombre_entry.config(state="readonly")
 
-        precio_label = Label(ventana_vender_producto, text='Precio por Metro: ')
+        precio_label = Label(ventana_vender_producto, text='Precio por Metro: ', font=('Helvetica',15))
         precio_label.grid(row=2, column=0)
 
         producto_precio_entry = Entry(ventana_vender_producto)
@@ -43,7 +43,7 @@ def ventana_vender_producto(tree, a):
         producto_precio_entry.insert(0, datos[2])
         producto_precio_entry.config(state="readonly")
 
-        stock_label = Label(ventana_vender_producto, text='Metro/Kilos/Unidades')
+        stock_label = Label(ventana_vender_producto, text='Metro/Kilos/Unidades', font=('Helvetica',15))
         stock_label.grid(row=3, column=0)
 
         producto_stock_entry = Entry(ventana_vender_producto)
@@ -51,7 +51,7 @@ def ventana_vender_producto(tree, a):
         producto_stock_entry.insert(0, datos[3])
         producto_stock_entry.config(state="readonly")
 
-        cantidad_vender_label = Label(ventana_vender_producto, text='Unidades a vender: ')
+        cantidad_vender_label = Label(ventana_vender_producto, text='Unidades a vender: ', font=('Helvetica',15))
         cantidad_vender_label.grid(row=4, column=0)
 
         cantidad_var = StringVar()
@@ -59,7 +59,7 @@ def ventana_vender_producto(tree, a):
         cantidad_vender_entry.grid(row=4, column=1)
         cantidad_var.trace_add("write", calcular_venta)
 
-        total_label = Label(ventana_vender_producto, text="Total: ")
+        total_label = Label(ventana_vender_producto, text="Total: ", font=('Helvetica',15))
         total_label.grid(row=5, column=0)
 
         producto_total_var = StringVar()
@@ -88,5 +88,5 @@ def ventana_vender_producto(tree, a):
 
             ventana_vender_producto.destroy()
 
-        boton_vender = Button(ventana_vender_producto, text='Realizar Venta', command=vender_producto)
+        boton_vender = Button(ventana_vender_producto, text='Realizar Venta', command=vender_producto, font=('Helvetica',15))
         boton_vender.grid(row=6, column=0, columnspan=2)

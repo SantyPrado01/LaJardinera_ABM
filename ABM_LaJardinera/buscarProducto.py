@@ -12,7 +12,7 @@ def buscar_producto(a):
     ventana_buscar_producto.resizable(width=False, height=False)
     ventana_buscar_producto.title('Buscar Producto')
     
-    titulo = Label(ventana_buscar_producto, text='Buscar Producto', font=65)
+    titulo = Label(ventana_buscar_producto, text='Buscar Producto', font=('Helvetica',60))
     titulo.grid(row=0, columnspan=3, padx=10, pady=10)
 
     criterio_busqueda = StringVar()
@@ -20,10 +20,10 @@ def buscar_producto(a):
     opciones_busqueda = ["Seleccionar Criterio","Nombre", "Categoría","Proveedor"]
 
     opcion_busqueda = OptionMenu(ventana_buscar_producto, criterio_busqueda, *opciones_busqueda)
-    opcion_busqueda.grid(row=1, column=0)
+    opcion_busqueda.grid(row=1, column=0, padx=5, pady=5)
 
-    busqueda_entry = Entry(ventana_buscar_producto, font=45)
-    busqueda_entry.grid(row=1, column=1)
+    busqueda_entry = Entry(ventana_buscar_producto, font=('Helvetica',15))
+    busqueda_entry.grid(row=1, column=1, padx=5, pady=5)
 
     def producto_buscar():
 
@@ -78,16 +78,16 @@ def buscar_producto(a):
                 
             tree.grid(row=3, column=0, padx=10, pady=10, columnspan=3)
 
-            boton_editar = Button(ventana_buscar_producto, text='Editar Producto', command=lambda:mostrar_formulario_edicion(tree), font=45)
-            boton_editar.grid(row=4, column=0)
+            boton_editar = Button(ventana_buscar_producto, text='Editar Producto', command=lambda:mostrar_formulario_edicion(tree), font=('Helvetica',15))
+            boton_editar.grid(row=4, column=0, padx=5, pady=5)
 
-            boton_eliminar = Button(ventana_buscar_producto, text='Vender Producto', command=lambda:ventana_vender_producto(tree,ventana_buscar_producto), font=45)
-            boton_eliminar.grid(row=4, column=1)
+            boton_eliminar = Button(ventana_buscar_producto, text='Vender Producto', command=lambda:ventana_vender_producto(tree,ventana_buscar_producto), font=('Helvetica',15))
+            boton_eliminar.grid(row=4, column=1, padx=5, pady=5)
 
         base_datos.close()
 
     producto_buscar()
-    boton_buscar = Button(ventana_buscar_producto, text='Buscar Producto', command=producto_buscar, font=45)
+    boton_buscar = Button(ventana_buscar_producto, text='Buscar Producto', command=producto_buscar, font=('Helvetica',15))
     boton_buscar.grid(row=2, columnspan=3, padx=5, pady=5)
 
     ventana_buscar_producto.mainloop()

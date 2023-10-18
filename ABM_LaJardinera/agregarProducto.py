@@ -12,38 +12,38 @@ def agregar_proveedor(a):
     ventana_agregar_proveedor = Toplevel(a)
     ventana_agregar_proveedor.title('Agregar Proveedor')
 
-    agregar_proveedor_label = Label(ventana_agregar_proveedor, text='Agregar Proveedor')
-    agregar_proveedor_label.grid(row=0, column=0, columnspan=2)
+    agregar_proveedor_label = Label(ventana_agregar_proveedor, text='Agregar Proveedor', font=('Helvetica',60))
+    agregar_proveedor_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-    proveedor_razon_social_label = Label(ventana_agregar_proveedor, text='Razon Social: ')
-    proveedor_razon_social_label.grid(row=1, column=0)
+    proveedor_razon_social_label = Label(ventana_agregar_proveedor, text='Razon Social: ', font=('Helvetica',15))
+    proveedor_razon_social_label.grid(row=1, column=0, padx=5, pady=5)
 
     proveedor_razon_social_entry = Entry(ventana_agregar_proveedor)
-    proveedor_razon_social_entry.grid(row=1, column=1)
+    proveedor_razon_social_entry.grid(row=1, column=1, padx=5, pady=5)
 
-    proveedor_cuit_label = Label(ventana_agregar_proveedor, text='CUIT: ')
-    proveedor_cuit_label.grid(row=2, column=0)
+    proveedor_cuit_label = Label(ventana_agregar_proveedor, text='CUIT: ', font=('Helvetica',15))
+    proveedor_cuit_label.grid(row=2, column=0, padx=5, pady=5)
 
     proveedor_cuit_entry = Entry(ventana_agregar_proveedor)
-    proveedor_cuit_entry.grid(row=2, column=1)
+    proveedor_cuit_entry.grid(row=2, column=1, padx=5, pady=5)
 
-    proveedor_domicilio_label = Label(ventana_agregar_proveedor, text='Domicilio: ')
-    proveedor_domicilio_label.grid(row=3, column=0)
+    proveedor_domicilio_label = Label(ventana_agregar_proveedor, text='Domicilio: ', font=('Helvetica',15))
+    proveedor_domicilio_label.grid(row=3, column=0, padx=5, pady=5)
 
     proveedor_domicilio_entry = Entry(ventana_agregar_proveedor)
-    proveedor_domicilio_entry.grid(row=3, column=1)
+    proveedor_domicilio_entry.grid(row=3, column=1, padx=5, pady=5)
 
-    proveedor_telefono_label = Label(ventana_agregar_proveedor, text='Telefono: ')
-    proveedor_telefono_label.grid(row=4, column=0)
+    proveedor_telefono_label = Label(ventana_agregar_proveedor, text='Telefono: ', font=('Helvetica',15))
+    proveedor_telefono_label.grid(row=4, column=0, padx=5, pady=5)
 
     proveedor_telefono_entry = Entry(ventana_agregar_proveedor)
-    proveedor_telefono_entry.grid(row=4, column=1)
+    proveedor_telefono_entry.grid(row=4, column=1, padx=5, pady=5)
 
-    proveedor_email_label = Label(ventana_agregar_proveedor, text='Email: ')
-    proveedor_email_label.grid(row=5, column=0)
+    proveedor_email_label = Label(ventana_agregar_proveedor, text='Email: ', font=('Helvetica',15))
+    proveedor_email_label.grid(row=5, column=0, padx=5, pady=5)
 
     proveedor_email_entry = Entry(ventana_agregar_proveedor)
-    proveedor_email_entry.grid(row=5, column=1)
+    proveedor_email_entry.grid(row=5, column=1, padx=5, pady=5)
 
     def guardar_proveedor():
         razon_social = proveedor_razon_social_entry.get()
@@ -59,7 +59,7 @@ def agregar_proveedor(a):
         messagebox.showinfo('Completado','El proveedor ha sido guardado con éxito.')
         ventana_agregar_proveedor.destroy()
 
-    boton_guardar_proveedor = Button(ventana_agregar_proveedor, text='Guardar', command=guardar_proveedor)
+    boton_guardar_proveedor = Button(ventana_agregar_proveedor, text='Guardar', command=guardar_proveedor, font=('Helvetica',15))
     boton_guardar_proveedor.grid(row=6, column=0, columnspan=2)
 
 def consultar_proveedores():
@@ -72,14 +72,14 @@ def agregar_categoria(a):
     ventana_agregar_categoria = Toplevel(a)
     ventana_agregar_categoria.title('Agregar Categoria')
 
-    agregar_categoria_label = Label(ventana_agregar_categoria, text='Agregar Categoria')
-    agregar_categoria_label.grid(row=0, column=0, columnspan=2)
+    agregar_categoria_label = Label(ventana_agregar_categoria, text='Agregar Categoria', font=('Helvetica',60))
+    agregar_categoria_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-    categoria_nombre_label = Label(ventana_agregar_categoria, text='Nombre: ')
-    categoria_nombre_label.grid(row=1, column=0)
+    categoria_nombre_label = Label(ventana_agregar_categoria, text='Nombre: ', font=('Helvetica',15))
+    categoria_nombre_label.grid(row=1, column=0, padx=5, pady=5)
 
     categoria_nombre_entry = Entry(ventana_agregar_categoria)
-    categoria_nombre_entry.grid(row=1, column=1)
+    categoria_nombre_entry.grid(row=1, column=1, padx=5, pady=5)
 
     def guardar_categoria():
         nombre = categoria_nombre_entry.get()
@@ -91,8 +91,8 @@ def agregar_categoria(a):
         messagebox.showinfo('Completado','La categoria ha sido guardada con éxito.')
         ventana_agregar_categoria.destroy()
 
-    boton_guardar_proveedor = Button(ventana_agregar_categoria, text='Guardar', command=guardar_categoria)
-    boton_guardar_proveedor.grid(row=6, column=0, columnspan=2)
+    boton_guardar_proveedor = Button(ventana_agregar_categoria, text='Guardar', command=guardar_categoria, font=('Helvetica',15))
+    boton_guardar_proveedor.grid(row=6, column=0, columnspan=2, padx=5, pady=5)
 
 def consultar_categorias():
     cursor.execute("SELECT nombre FROM categoria")
@@ -132,55 +132,55 @@ def ventana_agregar_producto(a):
     ventana_agregar_producto.title('Agregar Producto')
     ventana_agregar_producto.resizable(height=False, width=False)
 
-    agregar_producto_titulo = Label(ventana_agregar_producto, text='Agregar Productos')
-    agregar_producto_titulo.grid(row=0, column=0, columnspan=3)
+    agregar_producto_titulo = Label(ventana_agregar_producto, text='Agregar Productos', font=('Helvetica',60))
+    agregar_producto_titulo.grid(row=0, column=0, columnspan=3, padx=5, pady=5)
 
-    producto_nombre_label = Label(ventana_agregar_producto, text='Nombre: ')
-    producto_nombre_label.grid(row=1, column=0)
+    producto_nombre_label = Label(ventana_agregar_producto, text='Nombre: ', font=('Helvetica',15))
+    producto_nombre_label.grid(row=1, column=0, padx=5, pady=5)
 
     producto_nombre_entry= Entry(ventana_agregar_producto)
-    producto_nombre_entry.grid(row=1, column=1)
+    producto_nombre_entry.grid(row=1, column=1, padx=5, pady=5)
 
-    producto_precio_label = Label(ventana_agregar_producto, text='Precio por metro: ')
-    producto_precio_label.grid(row=2, column=0)
+    producto_precio_label = Label(ventana_agregar_producto, text='Precio por metro: ', font=('Helvetica',15))
+    producto_precio_label.grid(row=2, column=0, padx=5, pady=5)
 
     producto_precio_entry = Entry(ventana_agregar_producto)
-    producto_precio_entry.grid(row=2, column=1)
+    producto_precio_entry.grid(row=2, column=1, padx=5, pady=5)
 
-    producto_cantidad_label = Label(ventana_agregar_producto, text='Cantidad: ')
-    producto_cantidad_label.grid(row=3, column=0)
+    producto_cantidad_label = Label(ventana_agregar_producto, text='Cantidad: ', font=('Helvetica',15))
+    producto_cantidad_label.grid(row=3, column=0, padx=5, pady=5)
 
     producto_cantidad_entry = Entry(ventana_agregar_producto)
-    producto_cantidad_entry.grid(row=3, column=1)
+    producto_cantidad_entry.grid(row=3, column=1, padx=5, pady=5)
 
-    producto_proveedor_label = Label(ventana_agregar_producto, text='Proveedor: ')
-    producto_proveedor_label.grid(row=4, column=0)
+    producto_proveedor_label = Label(ventana_agregar_producto, text='Proveedor: ', font=('Helvetica',15))
+    producto_proveedor_label.grid(row=4, column=0, padx=5, pady=5)
 
     proveedor_opciones = consultar_proveedores()
     proveedor_seleccionada = StringVar()
     proveedor_seleccionada.set(proveedor_opciones[0])
 
     producto_proveedor_opciones = OptionMenu(ventana_agregar_producto, proveedor_seleccionada, *proveedor_opciones )
-    producto_proveedor_opciones.grid(row=4, column=1)
+    producto_proveedor_opciones.grid(row=4, column=1, padx=5, pady=5)
 
-    boton_agregar_proveedor = Button(ventana_agregar_producto, text='+', command=lambda:agregar_proveedor(ventana_agregar_producto))
-    boton_agregar_proveedor.grid(row=4, column=2)
+    boton_agregar_proveedor = Button(ventana_agregar_producto, text='+', command=lambda:agregar_proveedor(ventana_agregar_producto), font=('Helvetica',15))
+    boton_agregar_proveedor.grid(row=4, column=2, padx=5, pady=5)
 
-    producto_categoria_label = Label(ventana_agregar_producto, text='Categoria: ')
-    producto_categoria_label.grid(row=5, column=0)
+    producto_categoria_label = Label(ventana_agregar_producto, text='Categoria: ', font=('Helvetica',15))
+    producto_categoria_label.grid(row=5, column=0, padx=5, pady=5)
 
     categoria_opciones = consultar_categorias()
     categoria_seleccionada = StringVar()
     categoria_seleccionada.set(categoria_opciones[0])
 
     producto_categoria_opciones = OptionMenu(ventana_agregar_producto, categoria_seleccionada, *categoria_opciones)
-    producto_categoria_opciones.grid(row=5, column=1)
+    producto_categoria_opciones.grid(row=5, column=1, padx=5, pady=5)
 
-    boton_agregar_categoria = Button(ventana_agregar_producto, text='+', command=lambda:agregar_categoria(ventana_agregar_producto))
-    boton_agregar_categoria.grid(row=5, column=2)
+    boton_agregar_categoria = Button(ventana_agregar_producto, text='+', command=lambda:agregar_categoria(ventana_agregar_producto), font=('Helvetica',15))
+    boton_agregar_categoria.grid(row=5, column=2, padx=5, pady=5)
 
-    boton_agregar_producto = Button(ventana_agregar_producto, text='Agregar Prodcuto', command=guardar_producto)
-    boton_agregar_producto.grid(row=6, column=0, columnspan=3)
+    boton_agregar_producto = Button(ventana_agregar_producto, text='Agregar Prodcuto', command=guardar_producto, font=('Helvetica',15))
+    boton_agregar_producto.grid(row=6, column=0, columnspan=3, padx=5, pady=5)
 
     ventana_agregar_producto.mainloop()
     

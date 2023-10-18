@@ -6,13 +6,13 @@ from editarProducto import *
 from venderProducto import *
 from comandosSQL import *
 
-def generar_informe():
+def generar_informe(a):
 
-    ventana_generar_informe = Tk()
+    ventana_generar_informe = Toplevel(a)
     ventana_generar_informe.resizable(width=False, height=False)
     ventana_generar_informe.title('Generar Informes')
     
-    titulo = Label(ventana_generar_informe, text='Buscar Informe', font=65)
+    titulo = Label(ventana_generar_informe, text='Buscar Informe', font=('Helvetica',60))
     titulo.grid(row=0, columnspan=3, padx=10, pady=10)
 
     criterio_busqueda = StringVar()
@@ -22,7 +22,7 @@ def generar_informe():
     opcion_busqueda = OptionMenu(ventana_generar_informe, criterio_busqueda, *opciones_busqueda)
     opcion_busqueda.grid(row=1, column=0)
 
-    busqueda_entry = Entry(ventana_generar_informe, font=45)
+    busqueda_entry = Entry(ventana_generar_informe, font=('Helvetica',15))
     busqueda_entry.grid(row=1, column=1)
 
     def informes_buscar():
@@ -60,7 +60,7 @@ def generar_informe():
         else:
             # Muestra los resultados 
             global tree
-            tree = ttk.Treeview(ventana_generar_informe, columns=('ID',"Fecha","Producto","Cantidad","Precio Unitario","Total","Categoria","Proveedor"))
+            tree = ttk.Treeview(ventana_generar_informe, columns=("Fecha","Producto","Cantidad","Precio Unitario","Total","Categoria","Proveedor"))
             
             tree.column("#0", width=0, stretch=tk.NO)
             tree.heading("#1", text='Fecha',anchor=tk.CENTER) 
@@ -83,8 +83,8 @@ def generar_informe():
         base_datos.close()
 
     informes_buscar()
-    boton_buscar = Button(ventana_generar_informe, text='Buscar Producto', command=informes_buscar, font=45)
-    boton_buscar.grid(row=2, columnspan=3, padx=5, pady=5)
+    boton_ventas = Button(ventana_generar_informe, text='Buscar Ventas', command=informes_buscar, font=('Helvetica',15))
+    boton_ventas.grid(row=2, columnspan=3, padx=5, pady=5)
+
 
     ventana_generar_informe.mainloop()
-generar_informe()
