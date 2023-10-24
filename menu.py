@@ -26,7 +26,7 @@ boton_buscar.grid(row=1, column=2, columnspan=2)
 boton_proveedores = Button(ventana, text='Consultar Proveedores', command=lambda:buscar_proveedores(ventana), font=('Helvetica', 15))
 boton_proveedores.grid(row=2, column=0, columnspan=2)
 
-boton_compraproveedores = Button(ventana, text= "Compra a Proveedores")
+boton_compraproveedores = Button(ventana, text= "Compra a Proveedores", command='' ,font=('Helvetica', 15))
 boton_compraproveedores.grid(row=2, column= 2, columnspan=2)
 
 ventana.mainloop()

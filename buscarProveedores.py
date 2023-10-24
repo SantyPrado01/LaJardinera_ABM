@@ -13,7 +13,7 @@ def buscar_proveedores(a):
     ventana_buscar_proveedores.resizable(width=False, height=False)
     ventana_buscar_proveedores.title('Buscar Proveedor')
     
-    titulo = Label(ventana_buscar_proveedores, text='Buscar Proveedor', font=('Helvetica',60))
+    titulo = Label(ventana_buscar_proveedores, text='Buscar Proveedor', font=('Helvetica',30))
     titulo.grid(row=0, columnspan=3, padx=10, pady=10)
 
     criterio_busqueda = StringVar()
@@ -60,7 +60,12 @@ def buscar_proveedores(a):
             cursor.execute('SELECT * FROM proveedor')
 
         proveedor = cursor.fetchall()
-        
+
+        def proveedor_agregar():
+            nombre = valor_busqueda
+            nombre_proveedor.insert(0, nombre)
+            ventana_proveedor_noEncontrado.destroy()
+
         if not proveedor:
             def cerrar_ventana():
                 ventana_proveedor_noEncontrado.destroy()
@@ -73,7 +78,7 @@ def buscar_proveedores(a):
             texto_agregar_label = Label(ventana_proveedor_noEncontrado, text='Desea agregar el proveedor?')
             texto_agregar_label.grid(row=1, column=0, columnspan=2)
 
-            boton_agregar_proveedor = Button(ventana_proveedor_noEncontrado, text='Si', command=lambda:ventana_agregar_producto(a))
+            boton_agregar_proveedor = Button(ventana_proveedor_noEncontrado, text='Si', command=proveedor_agregar)
             boton_agregar_proveedor.grid(row=2, column=0)
 
             boton_noAgregar = Button(ventana_proveedor_noEncontrado, text='No', command=cerrar_ventana)
@@ -111,19 +116,23 @@ def buscar_proveedores(a):
     boton_buscar.grid(row=2, columnspan=3, padx=5, pady=5)
 
     def guardar_cambios():
-            
+        
         nombre = nombre_proveedor.get()
         cuit = cuit_proveedor.get()
         domicilio = domicilio_proveedor.get()
         numero = numero_proveedor.get()
         email = email_proveedor.get()
+
+       
         base_datos = sqlite3.connect('LaJardinera.bd')
         cursor = base_datos.cursor()
-        
+    
         cursor.execute("UPDATE proveedor SET razon_social=?, cuit=?, domicilio=?, numero_telefono=?, email=? WHERE id_proveedor=?", (nombre, cuit, domicilio, numero, email, datos[0]))
         base_datos.commit()
         messagebox.showinfo('Completado','El proveedor ha sido modificado con éxito.')
         proveedor_buscar()
+
+
 
     def guardar_proveedor():
         razon_social = nombre_proveedor.get()
@@ -132,17 +141,20 @@ def buscar_proveedores(a):
         numeroTelefono = numero_proveedor.get()
         email = email_proveedor.get()
 
-        cursor.execute('INSERT INTO proveedor (razon_social, cuit, domicilio, numero_telefono, email) VALUES (?,?,?,?,?)',
-               (razon_social, cuit, domicilio, numeroTelefono, email))
-        base_datos.commit()
-        messagebox.showinfo('Completado','El proveedor ha sido guardado con éxito.')
-        proveedor_buscar()
-
+        if razon_social:
+            cursor.execute('INSERT INTO proveedor (razon_social, cuit, domicilio, numero_telefono, email) VALUES (?,?,?,?,?)',
+                (razon_social, cuit, domicilio, numeroTelefono, email))
+            base_datos.commit()
+            messagebox.showinfo('Completado','El proveedor ha sido guardado con éxito.')
+            proveedor_buscar()
+        else:
+            messagebox.showerror('Error','El proveedor tiene que tener un nombre.')
+            
     frame_editar_proveedor = Frame(ventana_buscar_proveedores)
     frame_editar_proveedor.grid(row=0, column=4, rowspan=4)
 
-    titulo = Label(frame_editar_proveedor, text='Formulario Proveedor', font=('Helvetica',40))
-    titulo.grid(row=0, columnspan=2, padx=10, pady=10)
+    titulo = Label(frame_editar_proveedor, text='Formulario Proveedor', font=('Helvetica',30))
+    titulo.grid(row=0, columnspan=3, padx=10, pady=10)
 
     titulo_proveedor = Label(frame_editar_proveedor, text='Razon Social', font=('Helvetica',15))
     titulo_proveedor.grid(row=1, column=0, padx=5, pady=5)

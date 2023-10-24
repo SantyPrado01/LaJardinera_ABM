@@ -170,6 +170,7 @@ def buscar_producto(a):
         cantidad = stock_producto.get()
         proveedor = proveedor_seleccionada.get()
         categoria = categoria_seleccionada.get()
+
         
         cursor.execute('SELECT id_proveedor FROM proveedor WHERE razon_social = ?', (proveedor, ))
         id_proveedor = cursor.fetchone()
@@ -177,11 +178,14 @@ def buscar_producto(a):
         cursor.execute('SELECT id_categoria FROM categoria WHERE nombre = ?', (categoria, ))
         id_categoria = cursor.fetchone()
 
-        cursor.execute('INSERT INTO producto (nombre, precio, cantidad, id_proveedor, id_categoria) VALUES (?,?,?,?,?)',
-                    (nombre, precio, cantidad, id_proveedor[0], id_categoria[0]))
-        base_datos.commit()
+        if nombre and id_proveedor and id_categoria:
+            cursor.execute('INSERT INTO producto (nombre, precio, cantidad, id_proveedor, id_categoria) VALUES (?,?,?,?,?)',
+                        (nombre, precio, cantidad, id_proveedor[0], id_categoria[0]))
+            base_datos.commit()
 
-        messagebox.showinfo('Completado','El producto ha sido guardado con éxito.')
+            messagebox.showinfo('Completado','El producto ha sido guardado con éxito.')
+        else:
+            messagebox.showerror('Error','El Producto tiene que tener un nombre.')
 
         producto_buscar()
 
