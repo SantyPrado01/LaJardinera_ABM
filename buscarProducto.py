@@ -67,23 +67,29 @@ def buscar_producto(a):
 
         productos = cursor.fetchall()
         
+        def producto_agregar():
+            nombre = valor_busqueda
+            nombre_producto.insert(0, nombre)
+            ventana_producto_noEncontrado.destroy()
+
         if not productos:
             def cerrar_ventana():
                 ventana_producto_noEncontrado.destroy()
 
             ventana_producto_noEncontrado = Toplevel(ventana_buscar_producto)
+            ventana_producto_noEncontrado.resizable(height=False, width=False)
             ventana_producto_noEncontrado.title('Producto No Encontrado')
-            texto_noEcontrado_label = Label(ventana_producto_noEncontrado, text=f'{valor_busqueda} No Encontrado')
-            texto_noEcontrado_label.grid(row=0, column=0, columnspan=2)
+            texto_noEcontrado_label = Label(ventana_producto_noEncontrado, text=f'{valor_busqueda} No Encontrado', font=('Helvetica',30))
+            texto_noEcontrado_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-            texto_agregar_label = Label(ventana_producto_noEncontrado, text='Desea agregar el producto?')
-            texto_agregar_label.grid(row=1, column=0, columnspan=2)
+            texto_agregar_label = Label(ventana_producto_noEncontrado, text='Desea agregar el producto?', font=('Helvetica',15))
+            texto_agregar_label.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
 
-            boton_agregar_producto = Button(ventana_producto_noEncontrado, text='Si', command=lambda:ventana_agregar_producto(a))
-            boton_agregar_producto.grid(row=2, column=0)
+            boton_agregar_producto = Button(ventana_producto_noEncontrado, text='Si', command=producto_agregar, font=('Helvetica',15))
+            boton_agregar_producto.grid(row=2, column=0, padx=5, pady=5)
 
-            boton_noAgregar = Button(ventana_producto_noEncontrado, text='No', command=cerrar_ventana)
-            boton_noAgregar.grid(row=2, column=1)
+            boton_noAgregar = Button(ventana_producto_noEncontrado, text='No', command=cerrar_ventana, font=('Helvetica',15))
+            boton_noAgregar.grid(row=2, column=1, padx=5, pady=5)
 
         else:
             # Muestra los resultados 
@@ -185,7 +191,7 @@ def buscar_producto(a):
 
             messagebox.showinfo('Completado','El producto ha sido guardado con éxito.')
         else:
-            messagebox.showerror('Error','El Producto tiene que tener un nombre.')
+            messagebox.showerror('Error','El Producto tiene que tener nombre, categoria y proveedor.')
 
         producto_buscar()
 

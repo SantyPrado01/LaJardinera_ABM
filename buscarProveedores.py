@@ -71,18 +71,19 @@ def buscar_proveedores(a):
                 ventana_proveedor_noEncontrado.destroy()
 
             ventana_proveedor_noEncontrado = Toplevel(ventana_buscar_proveedores)
+            ventana_proveedor_noEncontrado.resizable(height=False, width=False)
             ventana_proveedor_noEncontrado.title('Proveedor No Encontrado')
-            texto_noEcontrado_label = Label(ventana_proveedor_noEncontrado, text=f'{valor_busqueda} No Encontrado')
-            texto_noEcontrado_label.grid(row=0, column=0, columnspan=2)
+            texto_noEcontrado_label = Label(ventana_proveedor_noEncontrado, text=f'{valor_busqueda} No Encontrado', font=('Helvetica',30))
+            texto_noEcontrado_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-            texto_agregar_label = Label(ventana_proveedor_noEncontrado, text='Desea agregar el proveedor?')
-            texto_agregar_label.grid(row=1, column=0, columnspan=2)
+            texto_agregar_label = Label(ventana_proveedor_noEncontrado, text='Desea agregar el proveedor?', font=('Helvetica',15))
+            texto_agregar_label.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
 
-            boton_agregar_proveedor = Button(ventana_proveedor_noEncontrado, text='Si', command=proveedor_agregar)
-            boton_agregar_proveedor.grid(row=2, column=0)
+            boton_agregar_proveedor = Button(ventana_proveedor_noEncontrado, text='Si', command=proveedor_agregar, font=('Helvetica',15))
+            boton_agregar_proveedor.grid(row=2, column=0, padx=5, pady=5)
 
-            boton_noAgregar = Button(ventana_proveedor_noEncontrado, text='No', command=cerrar_ventana)
-            boton_noAgregar.grid(row=2, column=1)
+            boton_noAgregar = Button(ventana_proveedor_noEncontrado, text='No', command=cerrar_ventana, font=('Helvetica',15))
+            boton_noAgregar.grid(row=2, column=1, padx=5, pady=5)
 
         else:
             # Muestra los resultados 
@@ -149,7 +150,7 @@ def buscar_proveedores(a):
             proveedor_buscar()
         else:
             messagebox.showerror('Error','El proveedor tiene que tener un nombre.')
-            
+
     frame_editar_proveedor = Frame(ventana_buscar_proveedores)
     frame_editar_proveedor.grid(row=0, column=4, rowspan=4)
 
