@@ -66,6 +66,7 @@ def ventana_vender_producto(tree, a):
         producto_total_var = StringVar()
         producto_total_entry = Entry(ventana_vender_producto, textvariable=producto_total_var)
         producto_total_entry.grid(row=5, column=1)
+        producto_total_entry.config(state= "readonly")
 
         def vender_producto():
             cantidad = float(cantidad_vender_entry.get())

@@ -20,13 +20,7 @@ def consultar_proveedores():
 
 def mostrar_formulario_edicion(tree):
 
-    ventana_formulario_edicion = Toplevel()
-    ventana_formulario_edicion.iconbitmap("icon.ico")
-    
-    ventana_formulario_edicion.resizable(width=False, height=False)
-
-    ventana_formulario_edicion.title('Editar Producto')
-
+    ventana_formulario_edicion = Frame()
     item_seleccionado = tree.selection()
 
     if item_seleccionado:
@@ -56,7 +50,8 @@ def mostrar_formulario_edicion(tree):
 
         stock_producto = Entry(ventana_formulario_edicion, font=('Helvetica',15))
         stock_producto.grid(row=3, column=1, padx=5, pady=5)
-        stock_producto.insert(0, datos[3])  
+        stock_producto.insert(0, datos[3])
+        stock_producto.config(state="readonly")
 
         titulo_proveedor = Label(ventana_formulario_edicion, text='Proveedor', font=('Helvetica',15))
         titulo_proveedor.grid(row=4, column=0, padx=5, pady=5)
@@ -97,7 +92,7 @@ def mostrar_formulario_edicion(tree):
             cursor.execute("SELECT id_categoria FROM categoria WHERE nombre = ?", (categoria,))
             categoria_id = cursor.fetchone()[0]
             
-            cursor.execute("UPDATE producto SET nombre=?, precio=?, cantidad=?, id_proveedor=?, id_categoria=? WHERE producto_id=?", (nombre, precio, stock, proveedor_id, categoria_id, datos[0]))
+            cursor.execute("UPDATE producto SET nombre=?, precio=?, cantidad=?, id_proveedor=?, id_categoria=? WHERE id_producto=?", (nombre, precio, stock, proveedor_id, categoria_id, datos[0]))
             base_datos.commit()
             messagebox.showinfo('Completado','El producto ha sido modificado con éxito.')
 
