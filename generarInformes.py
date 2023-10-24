@@ -3,7 +3,6 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from tkcalendar import DateEntry 
-from editarProducto import *
 from venderProducto import *
 from comandosSQL import *
 
@@ -79,17 +78,17 @@ def generar_informe(a):
             global tree
             tree = ttk.Treeview(ventana_generar_informe, columns=("Fecha","Producto","Cantidad","Precio Unitario","Total","Categoria","Proveedor"))
             
-            tree.column("#0", width=0, stretch=tk.NO)
-            tree.heading("#1", text='Fecha',anchor=tk.CENTER) 
-            tree.heading("#2", text="Producto", anchor=tk.CENTER)  # Centrar el encabezado 'Nombre'
-            tree.heading("#3", text="Cantidad", anchor=tk.CENTER)
-            tree.heading("#4", text="Precio Unitario", anchor=tk.CENTER)  
-            tree.heading("#5", text="Total", anchor=tk.CENTER)
-            tree.heading("#6", text="Categoria", anchor=tk.CENTER)   
-            tree.heading("#7", text="Proveedor", anchor=tk.CENTER)  
+            tree.column("#0", width=0, stretch=NO)
+            tree.heading("#1", text='Fecha',anchor=CENTER) 
+            tree.heading("#2", text="Producto", anchor=CENTER)  # Centrar el encabezado 'Nombre'
+            tree.heading("#3", text="Cantidad", anchor=CENTER)
+            tree.heading("#4", text="Precio Unitario", anchor=CENTER)  
+            tree.heading("#5", text="Total", anchor=CENTER)
+            tree.heading("#6", text="Categoria", anchor=CENTER)   
+            tree.heading("#7", text="Proveedor", anchor=CENTER)  
              
             for i in range(1, 8):  
-                tree.column(f"#{i}", anchor=tk.CENTER)
+                tree.column(f"#{i}", anchor=CENTER)
 
             for i in productos:
 

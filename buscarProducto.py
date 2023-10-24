@@ -2,10 +2,9 @@ import sqlite3
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from editarProducto import *
 from venderProducto import *
 from comandosSQL import *
-from agregarProducto import ventana_agregar_producto
+from buscarProveedores import buscar_proveedores
 
 def buscar_producto(a):
 
@@ -14,7 +13,7 @@ def buscar_producto(a):
     ventana_buscar_producto.resizable(width=False, height=False)
     ventana_buscar_producto.title('Buscar Producto')
     
-    titulo = Label(ventana_buscar_producto, text='Buscar Producto', font=('Helvetica',40))
+    titulo = Label(ventana_buscar_producto, text='Buscar Producto', font=('Helvetica',30))
     titulo.grid(row=0, columnspan=3, padx=10, pady=10)
 
     criterio_busqueda = StringVar()
@@ -28,6 +27,8 @@ def buscar_producto(a):
     busqueda_entry.grid(row=1, column=1, padx=5, pady=5)
 
     def tree_select(event):
+
+        global datos
         item_seleccionado = tree.selection()
         fila_seleccionada = tree.item(item_seleccionado)
         datos = fila_seleccionada['values']
@@ -89,16 +90,16 @@ def buscar_producto(a):
             global tree
             tree = ttk.Treeview(ventana_buscar_producto, columns=('ID',"Nombre","Precio Por Metro","Stock","Proveedor","Categoria"))
             tree.bind("<<TreeviewSelect>>",tree_select)
-            tree.column("#0", width=0, stretch=tk.NO)
-            tree.heading("#1", text='Codigo Producto',anchor=tk.CENTER) 
-            tree.heading("#2", text="Nombre", anchor=tk.CENTER)  # Centrar el encabezado 'Nombre'
-            tree.heading("#3", text="Precio Por Metro", anchor=tk.CENTER)  
-            tree.heading("#4", text="Stock", anchor=tk.CENTER)
-            tree.heading("#5", text="Proveedor", anchor=tk.CENTER)   
-            tree.heading("#6", text="Categoria", anchor=tk.CENTER)  
+            tree.column("#0", width=0, stretch=NO)
+            tree.heading("#1", text='Codigo Producto',anchor=CENTER) 
+            tree.heading("#2", text="Nombre", anchor=CENTER)  # Centrar el encabezado 'Nombre'
+            tree.heading("#3", text="Precio Por Metro", anchor=CENTER)  
+            tree.heading("#4", text="Stock", anchor=CENTER)
+            tree.heading("#5", text="Proveedor", anchor=CENTER)   
+            tree.heading("#6", text="Categoria", anchor=CENTER)  
              
             for i in range(1, 7):  
-                tree.column(f"#{i}", anchor=tk.CENTER)
+                tree.column(f"#{i}", anchor=CENTER)
 
             for resultado in productos:
                 id, nombre, precio, stock, proveedor_id, categoria_id = resultado
@@ -112,9 +113,6 @@ def buscar_producto(a):
                 tree.insert('','end', values=[id, nombre, precio, stock,proveedor_nombre, categoria_nombre])
                 
             tree.grid(row=3, column=0, padx=10, pady=10, columnspan=3)
-
-            boton_editar = Button(ventana_buscar_producto, text='Editar Producto', command=lambda:mostrar_formulario_edicion(tree), font=('Helvetica',15))
-            boton_editar.grid(row=4, column=0, padx=5, pady=5)
 
             boton_eliminar = Button(ventana_buscar_producto, text='Vender Producto', command=lambda:ventana_vender_producto(tree,ventana_buscar_producto), font=('Helvetica',15))
             boton_eliminar.grid(row=4, column=1, padx=5, pady=5)
@@ -137,12 +135,91 @@ def buscar_producto(a):
         proveedores = cursor.fetchall()
         base_datos.commit()
         return ['Seleccionar Proveedor'] + [nombre[0] for nombre in proveedores]
+    
+    def agregar_categoria(a):
+        ventana_agregar_categoria = Toplevel(a)
+        ventana_agregar_categoria.iconbitmap("icon.ico")
+        ventana_agregar_categoria.title('Agregar Categoria')
+
+        agregar_categoria_label = Label(ventana_agregar_categoria, text='Agregar Categoria', font=('Helvetica',40))
+        agregar_categoria_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
+
+        categoria_nombre_label = Label(ventana_agregar_categoria, text='Nombre: ', font=('Helvetica',15))
+        categoria_nombre_label.grid(row=1, column=0, padx=5, pady=5)
+
+        categoria_nombre_entry = Entry(ventana_agregar_categoria)
+        categoria_nombre_entry.grid(row=1, column=1, padx=5, pady=5)
+
+        def guardar_categoria():
+            nombre = categoria_nombre_entry.get()
+
+            cursor.execute('INSERT INTO categoria (nombre) VALUES (?)',
+                (nombre,))
+            base_datos.commit()
+            
+            messagebox.showinfo('Completado','La categoria ha sido guardada con éxito.')
+            consultar_categorias()
+            ventana_agregar_categoria.destroy()
+
+        boton_guardar_proveedor = Button(ventana_agregar_categoria, text='Guardar', command=guardar_categoria, font=('Helvetica',15))
+        boton_guardar_proveedor.grid(row=6, column=0, columnspan=2, padx=5, pady=5)
+
+    def guardar_producto_nuevo():
+        nombre =nombre_producto.get()
+        precio = precio_producto.get()
+        cantidad = stock_producto.get()
+        proveedor = proveedor_seleccionada.get()
+        categoria = categoria_seleccionada.get()
+        
+        cursor.execute('SELECT id_proveedor FROM proveedor WHERE razon_social = ?', (proveedor, ))
+        id_proveedor = cursor.fetchone()
+
+        cursor.execute('SELECT id_categoria FROM categoria WHERE nombre = ?', (categoria, ))
+        id_categoria = cursor.fetchone()
+
+        cursor.execute('INSERT INTO producto (nombre, precio, cantidad, id_proveedor, id_categoria) VALUES (?,?,?,?,?)',
+                    (nombre, precio, cantidad, id_proveedor[0], id_categoria[0]))
+        base_datos.commit()
+
+        messagebox.showinfo('Completado','El producto ha sido guardado con éxito.')
+
+        producto_buscar()
+
+        nombre_producto.delete(0, 'end')
+        precio_producto.delete(0, 'end')
+        stock_producto.delete(0, 'end')
+        proveedor_seleccionada.set('Seleccionar Proveedor')
+        categoria_seleccionada.set('Seleccionar Categoria')
+
+    def guardar_cambios():
+            
+        nombre = nombre_producto.get()
+        precio = precio_producto.get()
+        stock = stock_producto.get()
+        proveedor = proveedor_seleccionada.get()
+        categoria = categoria_seleccionada.get()
+        base_datos = sqlite3.connect('LaJardinera.bd')
+        cursor = base_datos.cursor()
+
+        cursor.execute("SELECT id_proveedor FROM proveedor WHERE razon_social = ?", (proveedor,))
+        proveedor_id = cursor.fetchone()[0]
+
+        cursor.execute("SELECT id_categoria FROM categoria WHERE nombre = ?", (categoria,))
+        categoria_id = cursor.fetchone()[0]
+        
+        cursor.execute("UPDATE producto SET nombre=?, precio=?, cantidad=?, id_proveedor=?, id_categoria=? WHERE id_producto=?", (nombre, precio, stock, proveedor_id, categoria_id, datos[0]))
+        base_datos.commit()
+        messagebox.showinfo('Completado','El producto ha sido modificado con éxito.')
+        producto_buscar()
+
+
+    #Frame Formulario Producto
 
     frame_editar_producto = Frame(ventana_buscar_producto)
-    frame_editar_producto.grid(row=0, column=4, rowspan=4)
+    frame_editar_producto.grid(row=0, column=4, rowspan=5)
 
-    titulo = Label(frame_editar_producto, text='Formulario Producto', font=('Helvetica',40))
-    titulo.grid(row=0, columnspan=2, padx=10, pady=10)
+    titulo = Label(frame_editar_producto, text='Formulario Producto', font=('Helvetica',30))
+    titulo.grid(row=0, columnspan=3)
 
     titulo_producto = Label(frame_editar_producto, text='Nombre Producto', font=('Helvetica',15))
     titulo_producto.grid(row=1, column=0, padx=5, pady=5)
@@ -171,7 +248,7 @@ def buscar_producto(a):
     producto_proveedor_opciones = OptionMenu(frame_editar_producto, proveedor_seleccionada, *proveedor_opciones )
     producto_proveedor_opciones.grid(row=4, column=1, padx=5, pady=5)
 
-    boton_agregar_proveedor = Button(frame_editar_producto, text='+', command=lambda:agregar_categoria(ventana_agregar_producto), font=('Helvetica',15))
+    boton_agregar_proveedor = Button(frame_editar_producto, text='+', command=lambda:buscar_proveedores(ventana_buscar_producto), font=('Helvetica',15))
     boton_agregar_proveedor.grid(row=4, column=2, padx=5, pady=5)
 
     titulo_categoria = Label(frame_editar_producto, text='Categoria', font=('Helvetica',15))
@@ -183,11 +260,14 @@ def buscar_producto(a):
     producto_categoria_opciones = OptionMenu(frame_editar_producto, categoria_seleccionada, *categoria_opciones)
     producto_categoria_opciones.grid(row=5, column=1, padx=5, pady=5)
 
-    boton_agregar_categoria = Button(frame_editar_producto, text='+', command=lambda:agregar_categoria(ventana_agregar_producto), font=('Helvetica',15))
+    boton_agregar_categoria = Button(frame_editar_producto, text='+', command=lambda:agregar_categoria(ventana_buscar_producto), font=('Helvetica',15))
     boton_agregar_categoria.grid(row=5, column=2, padx=5, pady=5)
 
-    boton_guardar = Button(frame_editar_producto, text='Guardar Cambios', command='guardar_cambios', font=('Helvetica',15))
-    boton_guardar.grid(row=6, column=1, padx=5, pady=5)
+    boton_guardar_nuevo = Button(frame_editar_producto, text='Guardar Producto', command=guardar_producto_nuevo, font=('Helvetica',15))
+    boton_guardar_nuevo.grid(row=6, column=0, padx=5, pady=5)
+
+    boton_modificar = Button(frame_editar_producto, text='Actualizar Producto', command=guardar_cambios, font=('Helvetica', 15))
+    boton_modificar.grid(row=6, column=1, padx=5, pady=5)
 
     boton_eliminar =Button(frame_editar_producto, text='Eliminar Producto', command='liminar_productos', font=('Helvetica',15))
     boton_eliminar.grid(row=6, column=2, padx=5, pady=5)
