@@ -12,6 +12,7 @@ cursor.execute('''
     cantidad FlOAT NOT NULL,
     id_proveedor INT,
     id_categoria INT,
+    estado INT,
     FOREIGN KEY (id_proveedor) REFERENCES proveedor(id_proveedor),
     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)   
     )

@@ -1,32 +1,55 @@
 from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk  
-from buscarProducto import buscar_producto
+from buscarProducto import buscar_productos, nuevo_producto, buscar_proveedor, nuevo_proveedor
 from generarInformes import generar_informe
-from buscarProveedores import buscar_proveedores
 
 ventana = Tk()
 
-ventana.resizable(width=False, height=False)
+ventana.state('zoomed')
+ventana.config(bg='white')
 ventana.title('Textil La Jardinera')
 ventana.iconbitmap("icon.ico")
 imagen_presentacion = Image.open("Control de Stock.png")
-imagen_presentacion = imagen_presentacion.resize((600, 400))  # Ajusta el tamaño de la imagen
+imagen_presentacion = imagen_presentacion.resize((1200, 220))  # Ajusta el tamaño de la imagen
 
-imagen_tk = ImageTk.PhotoImage(imagen_presentacion) # Convierte la imagen en un formato que Tkinter puede manejar
+imagen_tk = ImageTk.PhotoImage(imagen_presentacion)# Convierte la imagen 
 
-imagen_label = Label(ventana, image=imagen_tk)
-imagen_label.grid(row=0, column=0, columnspan=4)
+frame_menu = Frame(ventana, bg='white')
 
-boton_mostrar_productos = Button(ventana, text='Consultar Productos', command=lambda: buscar_producto(ventana), font=('Helvetica', 15))
-boton_mostrar_productos.grid(row=1, column=0, columnspan=2)
+frame_imagen = Frame(frame_menu, bg='white')
 
-boton_buscar = Button(ventana, text='Consultar Informes', command=lambda: generar_informe(ventana), font=('Helvetica', 15))
-boton_buscar.grid(row=1, column=2, columnspan=2)
+imagen_label = Label(frame_imagen, image=imagen_tk)
+imagen_label.pack()
+frame_imagen.grid(row=0, column=0, columnspan=2, pady=15)
 
-boton_proveedores = Button(ventana, text='Consultar Proveedores', command=lambda:buscar_proveedores(ventana), font=('Helvetica', 15))
-boton_proveedores.grid(row=2, column=0, columnspan=2)
+frame_botones = Frame(frame_menu, bg= 'white')
 
-boton_compraproveedores = Button(ventana, text= "Compra a Proveedores", command='' ,font=('Helvetica', 15))
-boton_compraproveedores.grid(row=2, column= 2, columnspan=2)
+estilos_botones = ttk.Style()
+
+estilos_botones.configure('BotonMenu.TButton', foreground='black', background='white', font=('Helvetica', 20), padding=(10,10), relief='groove')
+
+boton_nuevo_prodcuto = ttk.Button(frame_botones, text='Nuevo Producto', command=lambda:nuevo_producto(frame_menu), style='BotonMenu.TButton')
+boton_nuevo_prodcuto.grid(row=1, column=0, columnspan=2, pady=20)
+
+boton_mostrar_productos = ttk.Button(frame_botones, text='Buscar Productos', command=lambda: buscar_productos(frame_menu), style='BotonMenu.TButton')
+boton_mostrar_productos.grid(row=2, column=0, columnspan=2, pady=20)
+
+boton_buscar = ttk.Button(frame_botones, text='Consultar Informes', command=lambda: generar_informe(frame_menu), style='BotonMenu.TButton')
+boton_buscar.grid(row=3, column=0, columnspan=2, pady=20)
+
+boton_nuevo_proveedores = ttk.Button(frame_botones, text='Nuevo Proveedor', command=lambda:nuevo_proveedor(frame_menu), style='BotonMenu.TButton')
+boton_nuevo_proveedores.grid(row=4, column=0, columnspan=2, pady=20)
+
+boton_proveedores = ttk.Button(frame_botones, text='Buscar Proveedores', command=lambda:buscar_proveedor(frame_menu), style='BotonMenu.TButton')
+boton_proveedores.grid(row=5, column=0, columnspan=2, pady=20)
+
+boton_compraproveedores = ttk.Button(frame_botones, text= "Compra a Proveedores", command='', style='BotonMenu.TButton')
+boton_compraproveedores.grid(row=6, column= 0, columnspan=2, pady=20)
+
+frame_botones.grid(row=1, column=0, padx=15)
+frame_menu.pack()
+
+buscar_productos(frame_menu)
 
 ventana.mainloop()

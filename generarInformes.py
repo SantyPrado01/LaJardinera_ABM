@@ -8,10 +8,7 @@ from comandosSQL import *
 
 def generar_informe(a):
 
-    ventana_generar_informe = Toplevel(a)
-    ventana_generar_informe.iconbitmap("icon.ico")
-    ventana_generar_informe.resizable(width=False, height=False)
-    ventana_generar_informe.title('Generar Informes')
+    ventana_generar_informe = Frame(a)
     
     titulo = Label(ventana_generar_informe, text='Buscar Informe', font=('Helvetica',60))
     titulo.grid(row=0, columnspan=3, padx=10, pady=10)
@@ -103,4 +100,4 @@ def generar_informe(a):
     boton_ventas.grid(row=2, columnspan=3, padx=5, pady=5)
 
 
-    ventana_generar_informe.mainloop()
+    ventana_generar_informe.grid(row=1, column=1)
