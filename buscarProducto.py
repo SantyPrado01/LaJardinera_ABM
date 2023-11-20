@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from venderProducto import *
 from comandosSQL import *
+from tkcalendar import DateEntry 
 
 def buscar_producto(a):
 
@@ -31,7 +32,7 @@ def buscar_producto(a):
         if seleccion:
             item = tree.item(seleccion)
             datos_producto = item['values']
-            formulario_producto(a, datos_producto)
+            nuevo_producto(a, datos_producto)
 
     def producto_buscar():
 
@@ -323,7 +324,7 @@ def buscar_proveedores(a):
         if seleccion:
             item = tree.item(seleccion)
             datos_proveedor = item['values']
-            formulario_proveedor(a, datos_proveedor)
+            nuevo_producto(a, datos_proveedor)
 
     def proveedor_buscar():
 
@@ -430,34 +431,34 @@ def formulario_proveedor(a, datos=None):
     frame_proveedor = Frame(a, bg='white')
     frame_proveedor.grid(row=0, column=4, rowspan=4)
 
-    titulo = Label(frame_proveedor, text='Formulario Proveedor', font=('Helvetica',25))
+    titulo = Label(frame_proveedor, text='Formulario Proveedor', font=('Helvetica',25), bg='white')
     titulo.grid(row=0, columnspan=2)
 
-    titulo_proveedor = Label(frame_proveedor, text='Razon Social', font=('Helvetica',15))
+    titulo_proveedor = Label(frame_proveedor, text='Razon Social', font=('Helvetica',15), bg='white')
     titulo_proveedor.grid(row=1, column=0, pady=10)
 
     nombre_proveedor = ttk.Entry(frame_proveedor, font=('Helvetica',15))
     nombre_proveedor.grid(row=1, column=1,pady=10)
 
-    titulo_cuit = Label(frame_proveedor, text='CUIT', font=('Helvetica',15))
+    titulo_cuit = Label(frame_proveedor, text='CUIT', font=('Helvetica',15), bg='white')
     titulo_cuit.grid(row=2, column=0, pady=10)
 
     cuit_proveedor = ttk.Entry(frame_proveedor, font=('Helvetica',15))
     cuit_proveedor.grid(row=2, column=1, pady=10)
 
-    titulo_domicilio = Label(frame_proveedor, text='Domicilio', font=('Helvetica',15))
+    titulo_domicilio = Label(frame_proveedor, text='Domicilio', font=('Helvetica',15), bg='white')
     titulo_domicilio.grid(row=3, column=0, pady=10)
 
     domicilio_proveedor = ttk.Entry(frame_proveedor, font=('Helvetica',15))
     domicilio_proveedor.grid(row=3, column=1, pady=10)  
 
-    titulo_numero = Label(frame_proveedor, text='Numero Telefonico', font=('Helvetica',15))
+    titulo_numero = Label(frame_proveedor, text='Numero Telefonico', font=('Helvetica',15), bg='white')
     titulo_numero.grid(row=4, column=0, pady=10)
 
     numero_proveedor = ttk.Entry(frame_proveedor, font=('Helvetica',15))
     numero_proveedor.grid(row=4, column=1, pady=10)
 
-    titulo_email = Label(frame_proveedor, text='Email', font=('Helvetica',15))
+    titulo_email = Label(frame_proveedor, text='Email', font=('Helvetica',15), bg='white')
     titulo_email.grid(row=5, column=0, pady=10)
 
     email_proveedor = ttk.Entry(frame_proveedor, font=('Helvetica',15))
@@ -488,6 +489,106 @@ def formulario_proveedor(a, datos=None):
         boton_modificar.config(state=NORMAL)
         boton_eliminar.config(state=NORMAL)
 
+def generar_informe(a):
+
+    global ventana_generar_informe
+
+    ventana_generar_informe = Frame(a, bg='white')
+    frame_buscar = Frame(ventana_generar_informe, bg='#C798E6')
+    estilo_buscar = ttk.Style()
+    estilo_buscar.configure('OptionBuscar.TMenubutton', foreground='black', background='#C798E6', font=('Helvetica', 15), relief='raised')
+    estilo_buscar.configure('BotonBuscar.TButton', foreground='black', background='#C798E6', font=('Helvetica', 15), padding=(5,5), relief='groove')
+
+    criterio_busqueda = StringVar()
+    criterio_busqueda.set("Seleccionar Criterio")
+    opciones_busqueda = ["Seleccionar Criterio","Nombre", "Categoría","Proveedor"]
+
+    opcion_busqueda = ttk.OptionMenu(frame_buscar, criterio_busqueda, *opciones_busqueda, style='OptionBuscar.TMenubutton')
+    opcion_busqueda.grid(row=1, column=0)
+
+    busqueda_entry = Entry(frame_buscar, font=('Helvetica',15))
+    busqueda_entry.grid(row=1, column=1, padx=10)
+
+    date_picker = DateEntry(frame_buscar, width=20, background='darkblue', foreground='white', borderwidth=2)
+    date_picker.grid(row=1, column=2)
+
+    def informes_buscar():
+
+        # Obtén el criterio de búsqueda y el valor de entrada de búsqueda
+        criterio = criterio_busqueda.get()
+        valor_busqueda = busqueda_entry.get()
+        fecha_seleccionada = date_picker.get_date()
+        base_datos = sqlite3.connect('LaJardinera.bd')
+        cursor = base_datos.cursor()
+
+        # Define la consulta base sin criterios de fecha
+        consulta_base = '''
+            SELECT ventas.id_venta, ventas.fecha, producto.nombre, ventas.cantidad, ventas.precio_unitario, 
+            (ventas.cantidad * ventas.precio_unitario) as total_venta, categoria.nombre as categoria, 
+            proveedor.razon_social as proveedor
+            FROM ventas
+            INNER JOIN producto ON ventas.id_producto = producto.id_producto
+            LEFT JOIN categoria ON producto.id_categoria = categoria.id_categoria
+            LEFT JOIN proveedor ON producto.id_proveedor = proveedor.id_proveedor
+        '''
+        
+        # Lista para almacenar las consultas que se ejecutarán
+        consultas = []
+        
+        if fecha_seleccionada:
+            consulta_base += ' WHERE ventas.fecha = ?'
+            consultas.append(fecha_seleccionada)
+        
+        if criterio == "Nombre":
+            consulta_base += ' AND producto.nombre LIKE ?'
+            consultas.append('%' + valor_busqueda + '%')
+        elif criterio == "Categoria":
+            consulta_base += ' AND categoria.nombre LIKE ?'
+            consultas.append('%' + valor_busqueda + '%')
+        elif criterio == "Proveedor":
+            consulta_base += ' AND proveedor.razon_social LIKE ?'
+            consultas.append('%' + valor_busqueda + '%')
+        
+        cursor.execute(consulta_base, consultas)
+        productos = cursor.fetchall()
+
+        if not productos:
+
+            messagebox.showerror('Error', f'{valor_busqueda} No Encontrado' )
+
+        else:
+            # Muestra los resultados 
+            global tree
+            tree = ttk.Treeview(ventana_generar_informe, columns=("Fecha","Producto","Cantidad","Precio Unitario","Total","Categoria","Proveedor"))
+            
+            tree.column("#0", width=0, stretch=NO)
+            tree.heading("#1", text='Fecha',anchor=CENTER) 
+            tree.heading("#2", text="Producto", anchor=CENTER)  # Centrar el encabezado 'Nombre'
+            tree.heading("#3", text="Cantidad", anchor=CENTER)
+            tree.heading("#4", text="Precio Unitario", anchor=CENTER)  
+            tree.heading("#5", text="Total", anchor=CENTER)
+            tree.heading("#6", text="Categoria", anchor=CENTER)   
+            tree.heading("#7", text="Proveedor", anchor=CENTER)  
+             
+            for i in range(1, 8):  
+                tree.column(f"#{i}", anchor=CENTER)
+
+            for i in productos:
+
+                tree.insert('', 'end', values=[i[1], i[2], i[3], i[4], i[5], i[6], i[7]])
+                
+            tree.grid(row=3, column=0, padx=10, pady=10, columnspan=3)
+
+        base_datos.close()
+
+    informes_buscar()   
+    boton_ventas = ttk.Button(frame_buscar, text='Buscar Ventas', command=informes_buscar, style='BotonBuscar.TButton')
+    boton_ventas.grid(row=1, column=3, padx=5, pady=5)
+    frame_buscar.grid(row=1, columnspan=5)
+    ventana_generar_informe.grid(row=1, column=1)
+
+
+ventana_generar_informe = None
 ventana_buscar_producto = None
 frame_producto = None
 ventana_buscar_proveedores = None
@@ -497,31 +598,42 @@ def destruir_frame(frame):
     if frame:
         frame.destroy()
 
-def nuevo_producto(a):
-    global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, frame_producto
+def nuevo_producto(a, datos=None):
+    global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, ventana_generar_informe
     destruir_frame(ventana_buscar_producto)
+    destruir_frame(ventana_generar_informe)
     destruir_frame(ventana_buscar_proveedores)
     destruir_frame(frame_proveedor)
-    formulario_producto(a)
+    formulario_producto(a, datos)
 
 def buscar_productos(a):
-    global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, frame_producto
+    global ventana_buscar_proveedores, frame_proveedor, frame_producto, ventana_generar_informe
     destruir_frame(ventana_buscar_proveedores)
+    destruir_frame(ventana_generar_informe)
     destruir_frame(frame_producto)
     destruir_frame(frame_proveedor)
     buscar_producto(a)
 
 def buscar_proveedor(a):
-    global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, frame_producto
+    global ventana_buscar_producto, frame_proveedor, frame_producto, ventana_generar_informe
     destruir_frame(ventana_buscar_producto)
+    destruir_frame(ventana_generar_informe)
     destruir_frame(frame_producto)
     destruir_frame(frame_proveedor)
     buscar_proveedores(a)
 
 def nuevo_proveedor(a):
-    global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, frame_producto
+    global ventana_buscar_proveedores, ventana_buscar_producto, frame_producto, ventana_generar_informe
     destruir_frame(ventana_buscar_producto)
+    destruir_frame(ventana_generar_informe)
     destruir_frame(ventana_buscar_proveedores)
     destruir_frame(frame_producto)
     formulario_proveedor(a)
-    
+
+def buscar_informes(a):
+    global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, frame_producto
+    destruir_frame(ventana_buscar_producto)
+    destruir_frame(frame_proveedor)
+    destruir_frame(ventana_buscar_proveedores)
+    destruir_frame(frame_producto)
+    generar_informe(a)

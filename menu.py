@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk  
-from buscarProducto import buscar_productos, nuevo_producto, buscar_proveedor, nuevo_proveedor
-from generarInformes import generar_informe
+from buscarProducto import buscar_productos, nuevo_producto, buscar_proveedor, nuevo_proveedor, buscar_informes
+
 
 ventana = Tk()
 
@@ -35,7 +35,7 @@ boton_nuevo_prodcuto.grid(row=1, column=0, columnspan=2, pady=20)
 boton_mostrar_productos = ttk.Button(frame_botones, text='Buscar Productos', command=lambda: buscar_productos(frame_menu), style='BotonMenu.TButton')
 boton_mostrar_productos.grid(row=2, column=0, columnspan=2, pady=20)
 
-boton_buscar = ttk.Button(frame_botones, text='Consultar Informes', command=lambda: generar_informe(frame_menu), style='BotonMenu.TButton')
+boton_buscar = ttk.Button(frame_botones, text='Consultar Informes', command=lambda: buscar_informes(frame_menu), style='BotonMenu.TButton')
 boton_buscar.grid(row=3, column=0, columnspan=2, pady=20)
 
 boton_nuevo_proveedores = ttk.Button(frame_botones, text='Nuevo Proveedor', command=lambda:nuevo_proveedor(frame_menu), style='BotonMenu.TButton')
