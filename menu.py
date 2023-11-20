@@ -3,7 +3,6 @@ from tkinter import ttk
 from PIL import Image, ImageTk  
 from buscarProducto import buscar_productos, nuevo_producto, buscar_proveedor, nuevo_proveedor, buscar_informes
 
-
 ventana = Tk()
 
 ventana.state('zoomed')

@@ -50,7 +50,7 @@ def buscar_producto(a):
         elif criterio == "Categoría":
             cursor.execute("SELECT * FROM producto WHERE id_categoria IN (SELECT id_categoria FROM categoria WHERE nombre LIKE ?)AND estado = 0", ('%' + valor_busqueda + '%',))
         else:
-            cursor.execute('SELECT * FROM producto')
+            cursor.execute('SELECT * FROM producto WHERE estado = 0')
 
         productos = cursor.fetchall()
 
@@ -58,19 +58,19 @@ def buscar_producto(a):
             def cerrar_ventana():
                 ventana_producto_noEncontrado.destroy()
 
-            ventana_producto_noEncontrado = Toplevel(ventana_buscar_producto)
+            ventana_producto_noEncontrado = Toplevel(ventana_buscar_producto, bg='white')
             ventana_producto_noEncontrado.resizable(height=False, width=False)
             ventana_producto_noEncontrado.title('Producto No Encontrado')
-            texto_noEcontrado_label = ttk.Label(ventana_producto_noEncontrado, text=f'{valor_busqueda} No Encontrado')
+            texto_noEcontrado_label = ttk.Label(ventana_producto_noEncontrado, text=f'{valor_busqueda} No Encontrado', font=('Helvetica',15), background='white')
             texto_noEcontrado_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-            texto_agregar_label = ttk.Label(ventana_producto_noEncontrado, text='Desea agregar el producto?')
+            texto_agregar_label = ttk.Label(ventana_producto_noEncontrado, text='Desea agregar el producto?', font=('Helvetica',15), background='white')
             texto_agregar_label.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
 
-            boton_agregar_producto = ttk.Button(ventana_producto_noEncontrado, text='Si', command=lambda:formulario_producto(ventana_buscar_producto))
+            boton_agregar_producto = ttk.Button(ventana_producto_noEncontrado, text='Si', command=lambda:nuevo_producto(a), style='BotonBuscar.TButton')
             boton_agregar_producto.grid(row=2, column=0, padx=5, pady=5)
 
-            boton_noAgregar = ttk.Button(ventana_producto_noEncontrado, text='No', command=cerrar_ventana)
+            boton_noAgregar = ttk.Button(ventana_producto_noEncontrado, text='No', command=cerrar_ventana, style='BotonBuscar.TButton')
             boton_noAgregar.grid(row=2, column=1, padx=5, pady=5)
 
         else:
@@ -95,7 +95,7 @@ def buscar_producto(a):
                 tree.column(f"#{i}", anchor=CENTER)
 
             for resultado in productos:
-                id, nombre, precio, stock, proveedor_id, categoria_id = resultado
+                id, nombre, precio, stock, proveedor_id, categoria_id, estado = resultado
 
                 cursor.execute("SELECT razon_social FROM proveedor WHERE id_proveedor=?", (proveedor_id,))
                 proveedor_nombre = cursor.fetchone()[0]
@@ -137,17 +137,17 @@ def formulario_producto(a, datos=None):
         return ['Seleccionar Proveedor'] + [nombre[0] for nombre in proveedores]
     
     def agregar_categoria(a):
-        ventana_agregar_categoria = Toplevel(a)
+        ventana_agregar_categoria = Toplevel(a, bg='white')
         ventana_agregar_categoria.iconbitmap("icon.ico")
         ventana_agregar_categoria.title('Agregar Categoria')
 
-        agregar_categoria_label = ttk.Label(ventana_agregar_categoria, text='Agregar Categoria')
+        agregar_categoria_label = ttk.Label(ventana_agregar_categoria, text='Agregar Categoria',font=('Helvetica',15), background='white')
         agregar_categoria_label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-        categoria_nombre_label = ttk.Label(ventana_agregar_categoria, text='Nombre: ')
+        categoria_nombre_label = ttk.Label(ventana_agregar_categoria, text='Nombre: ', font=('Helvetica',15), background='white')
         categoria_nombre_label.grid(row=1, column=0, padx=5, pady=5)
 
-        categoria_nombre_entry = ttk.Entry(ventana_agregar_categoria)
+        categoria_nombre_entry = ttk.Entry(ventana_agregar_categoria,font=('Helvetica',15))
         categoria_nombre_entry.grid(row=1, column=1, padx=5, pady=5)
 
         def guardar_categoria():
@@ -213,10 +213,11 @@ def formulario_producto(a, datos=None):
         messagebox.showinfo('Completado','El producto ha sido modificado con éxito.')
 
     def eliminar_producto():
-        cursor.execute("UPDATE producto SET estado=?", (1))
+        cursor.execute("UPDATE producto SET estado=?", ('1'))
         base_datos.commit()
         nombre_producto.delete(0, 'end')
         precio_producto.delete(0, 'end')
+        stock_producto.config(state=NORMAL)
         stock_producto.delete(0, 'end')
         proveedor_seleccionada.set('Seleccionar Proveedor')
         categoria_seleccionada.set('Seleccionar Categoria')
@@ -260,7 +261,7 @@ def formulario_producto(a, datos=None):
     producto_proveedor_opciones = ttk.OptionMenu(frame_producto, proveedor_seleccionada, *proveedor_opciones, style='Option.TMenubutton')
     producto_proveedor_opciones.grid(row=4, column=0, pady=10)
 
-    boton_agregar_proveedor = ttk.Button(frame_producto, text='+', command=lambda:buscar_proveedores(ventana_buscar_producto), style='BotonMas.TButton')
+    boton_agregar_proveedor = ttk.Button(frame_producto, text='+', command=lambda:nuevo_proveedor(a), style='BotonMas.TButton')
     boton_agregar_proveedor.grid(row=4, column=1, pady=10)
 
     categoria_opciones = consultar_categorias()
@@ -269,7 +270,7 @@ def formulario_producto(a, datos=None):
     producto_categoria_opciones = ttk.OptionMenu(frame_producto, categoria_seleccionada, *categoria_opciones, style='Option.TMenubutton')
     producto_categoria_opciones.grid(row=5, column=0, pady=10)
 
-    boton_agregar_categoria = ttk.Button(frame_producto, text='+', command=lambda:agregar_categoria(ventana_buscar_producto), style='BotonMas.TButton')
+    boton_agregar_categoria = ttk.Button(frame_producto, text='+', command=lambda:agregar_categoria(a), style='BotonMas.TButton')
     boton_agregar_categoria.grid(row=5, column=1, pady=10)
 
     estilos_botones_producto = ttk.Style()
@@ -324,7 +325,7 @@ def buscar_proveedores(a):
         if seleccion:
             item = tree.item(seleccion)
             datos_proveedor = item['values']
-            nuevo_producto(a, datos_proveedor)
+            nuevo_proveedor(a, datos_proveedor)
 
     def proveedor_buscar():
 
@@ -622,13 +623,13 @@ def buscar_proveedor(a):
     destruir_frame(frame_proveedor)
     buscar_proveedores(a)
 
-def nuevo_proveedor(a):
+def nuevo_proveedor(a, datos=None):
     global ventana_buscar_proveedores, ventana_buscar_producto, frame_producto, ventana_generar_informe
     destruir_frame(ventana_buscar_producto)
     destruir_frame(ventana_generar_informe)
     destruir_frame(ventana_buscar_proveedores)
     destruir_frame(frame_producto)
-    formulario_proveedor(a)
+    formulario_proveedor(a, datos)
 
 def buscar_informes(a):
     global ventana_buscar_proveedores, ventana_buscar_producto, frame_proveedor, frame_producto

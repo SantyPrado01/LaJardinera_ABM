@@ -26,6 +26,7 @@ cursor.execute('''
     domicilio VARCHAR(255),
     numero_telefono VARCHAR(255),
     email VARCHAR(255)
+
     )
 ''')
 
